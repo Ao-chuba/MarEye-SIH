@@ -4,6 +4,22 @@
 /node_modules/
 # Python virtual environment
 /.venv/
+/venv/
+**/.venv/
+**/venv/
 # Environment files
 .env
 .env.local
+# Large files
+/bin/ffmpeg.exe
+**/ffmpeg.exe
+# Model files (too large for GitHub)
+*.zip
+*.dll
+*.lib
+*.pyd
+# Deep learning model directories
+/proj/
+/Detection model/
+**/__pycache__/
+**/*.pyc
