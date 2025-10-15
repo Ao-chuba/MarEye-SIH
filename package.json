@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/start-build.js",
+    "build": "next build",
     "dev": "node scripts/start-dev.js",
     "dev:all": "node scripts/start-all.js",
     "build:direct": "next build",
@@ -13,7 +13,8 @@
     "flask": "node scripts/start-flask.js",
     "crowdfunding": "node scripts/start-crowdfunding.js",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start -p ${PORT:-10000}",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@ai-sdk/groq": "^2.0.20",
@@ -64,7 +65,6 @@
     "crypto": "^1.0.1",
     "date-fns": "4.1.0",
     "embla-carousel-react": "latest",
-    "firebase-admin": "^13.5.0",
     "gcp-metadata": "^5.3.0",
     "geist": "latest",
     "google-auth-library": "^9.0.0",

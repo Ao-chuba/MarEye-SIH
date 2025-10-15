@@ -1,0 +1,21 @@
+{
+  "image_name": "mines1",
+  "timestamp": "2025-10-15T08:13:14.646Z",
+  "file_paths": {
+    "original": "D:\\MAREYE-frontend(no modules, .next,venv)\\Oceanova---SIH\\temp\\input\\mines1.jpg",
+    "enhanced": "D:\\MAREYE-frontend(no modules, .next,venv)\\Oceanova---SIH\\temp\\output\\enhanced_mines1.jpg"
+  },
+  "basic_metrics": {
+    "psnr": 17.391460620909193,
+    "ssim": 0.8388454583426744,
+    "uiqm_original": 92.1585182822956,
+    "uiqm_enhanced": 83.45683027152484,
+    "uiqm_improvement": -8.701688010770766
+  },
+  "quality_assessment": {
+    "psnr_quality": "Moderate",
+    "ssim_quality": "High similarity",
+    "uiqm_quality": "No improvement",
+    "overall_assessment": "Enhancement failed"
+  }
+}

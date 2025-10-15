@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: mareye-marine-security
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    healthCheckPath: /api/health
+    autoDeploy: true
+    branch: main
+    # Additional configuration for better deployment
+    dockerfilePath: ./Dockerfile
+    # Render will automatically set PORT environment variable

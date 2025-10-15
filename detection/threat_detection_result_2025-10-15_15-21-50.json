@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "threats": [
+    {
+      "id": 1,
+      "class": "Mines - v1 2025-05-15 8-03pm",
+      "class_id": 0,
+      "confidence": 0.9099540710449219,
+      "confidence_percentage": 90.99540710449219,
+      "threat_level": "CRITICAL",
+      "bounding_box": {
+        "x1": 155.2178955078125,
+        "y1": 227.4147491455078,
+        "x2": 333.8576354980469,
+        "y2": 464.25518798828125,
+        "width": 178.63973999023438,
+        "height": 236.84043884277344,
+        "center_x": 244.5377655029297,
+        "center_y": 345.8349609375
+      },
+      "area_pixels": 42309.11328125,
+      "relative_size": 10.329373359680176
+    },
+    {
+      "id": 2,
+      "class": "Mines - v1 2025-05-15 8-03pm",
+      "class_id": 0,
+      "confidence": 0.7907543182373047,
+      "confidence_percentage": 79.07543182373047,
+      "threat_level": "HIGH",
+      "bounding_box": {
+        "x1": 476.82257080078125,
+        "y1": 214.0028839111328,
+        "x2": 614.8954467773438,
+        "y2": 374.86810302734375,
+        "width": 138.0728759765625,
+        "height": 160.86521911621094,
+        "center_x": 545.8590087890625,
+        "center_y": 294.43548583984375
+      },
+      "area_pixels": 22211.123046875,
+      "relative_size": 5.422637462615967
+    }
+  ],
+  "threat_count": 2,
+  "overall_threat_level": "HIGH",
+  "overall_threat_score": 0.752,
+  "metadata": {
+    "image_path": "1688388319291_jpg.rf.31c14b5d1287946dadadc7ed68699fe2.jpg",
+    "image_width": 640,
+    "image_height": 640,
+    "image_size_kb": 56.14,
+    "model_used": "best.pt",
+    "confidence_threshold": 0.3,
+    "detection_timestamp": "2025-10-15 15:21:50"
+  }
+}

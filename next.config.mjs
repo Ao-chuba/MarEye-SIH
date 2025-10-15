@@ -18,8 +18,17 @@ const nextConfig = {
     }
     return config;
   },
-  // Disable static optimization for API routes that use dynamic features
+  // Optimize for deployment
   output: 'standalone',
+  // Increase timeout for API routes
+  serverRuntimeConfig: {
+    maxDuration: 300, // 5 minutes
+  },
+  // Configure for Render deployment
+  env: {
+    CUSTOM_KEY: process.env.CUSTOM_KEY,
+    PORT: process.env.PORT,
+  },
 }
 
 export default nextConfig
