@@ -1,8 +1,9 @@
 # Next.js build output
 /.next/
-# Node modules
+# Node modules (excluded for deployment)
 /node_modules/
-# Python virtual environment
+**/node_modules/
+# Python virtual environment (excluded for deployment)
 /.venv/
 /venv/
 **/.venv/
@@ -10,16 +11,11 @@
 # Environment files
 .env
 .env.local
-# Large files
-/bin/ffmpeg.exe
-**/ffmpeg.exe
-# Model files (too large for GitHub)
-*.zip
-*.dll
-*.lib
-*.pyd
-# Deep learning model directories
-/proj/
-/Detection model/
+# Python cache files
 **/__pycache__/
 **/*.pyc
+# Temporary files
+*.tmp
+*.temp
+# Log files
+*.log
