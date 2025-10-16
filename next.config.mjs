@@ -19,7 +19,6 @@ const nextConfig = {
     return config;
   },
   // Optimize for deployment
-  output: 'standalone',
   // Increase timeout for API routes
   serverRuntimeConfig: {
     maxDuration: 300, // 5 minutes
