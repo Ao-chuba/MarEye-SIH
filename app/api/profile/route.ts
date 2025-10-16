@@ -3,6 +3,7 @@ import { getUserCollection } from "@/dbCollections";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 
+// Force dynamic rendering to prevent static generation errors
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {

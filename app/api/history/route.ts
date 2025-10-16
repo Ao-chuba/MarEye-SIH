@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDatabase } from "@/lib/mongodb";
 import { getUserFromCookies, getUserFromAuthHeader } from "@/lib/auth";
 
+// Force dynamic rendering to prevent static generation errors
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
