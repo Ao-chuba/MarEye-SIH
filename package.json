@@ -13,8 +13,7 @@
     "flask": "node scripts/start-flask.js",
     "crowdfunding": "node scripts/start-crowdfunding.js",
     "lint": "next lint",
-    "start": "next start -p ${PORT:-10000}",
-    "postbuild": "next-sitemap"
+    "start": "next start -p ${PORT:-10000}"
   },
   "dependencies": {
     "@ai-sdk/groq": "^2.0.20",

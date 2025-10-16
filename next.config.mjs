@@ -11,8 +11,6 @@ const nextConfig = {
   },
   experimental: {
     workerThreads: false,
-    // Disable middleware runtime restrictions for deployment compatibility
-    middlewareSourceMaps: false,
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
@@ -30,10 +28,6 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
     PORT: process.env.PORT,
-  },
-  // Disable middleware runtime for better deployment compatibility
-  middleware: {
-    runtime: 'nodejs',
   },
 }
 
