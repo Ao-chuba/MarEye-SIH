@@ -51,404 +51,181 @@ interface ProcessingResult {
 }
 
 export default function CNNModelPage() {
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [processingProgress, setProcessingProgress] = useState(0)
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [results, setResults] = useState<ProcessingResult[]>([])
-  const [activeTab, setActiveTab] = useState("image")
-  const [isVideoProcessing, setIsVideoProcessing] = useState(false)
-  const [videoErrors, setVideoErrors] = useState<Set<number>>(new Set())
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  // COMMENTED OUT: Original processing functionality - now redirects to external URL
+  // const [isProcessing, setIsProcessing] = useState(false)
+  // const [processingProgress, setProcessingProgress] = useState(0)
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  // const [results, setResults] = useState<ProcessingResult[]>([])
+  // const [activeTab, setActiveTab] = useState("image")
+  // const [isVideoProcessing, setIsVideoProcessing] = useState(false)
+  // const [videoErrors, setVideoErrors] = useState<Set<number>>(new Set())
+  // const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Add event listener to prevent page refresh and handle errors
-  useEffect(() => {
-    // Override the default error handling to prevent page refresh
-    const originalError = window.onerror
-    const originalUnhandledRejection = window.onunhandledrejection
-    
-    window.onerror = (message, source, lineno, colno, error) => {
-      console.warn("Global error caught:", message, source, lineno, colno, error)
-      
-      // Prevent Next.js manifest errors from causing page refresh
-      if (message && (
-        message.toString().includes('Unexpected end of JSON input') ||
-        message.toString().includes('loadManifest') ||
-        message.toString().includes('getNextFontManifest')
-      )) {
-        console.warn("Next.js manifest error prevented from causing page refresh")
-        return true // Prevent default error handling
-      }
-      
-      // Prevent any errors during video processing from causing page refresh
-      if (isVideoProcessing) {
-        console.warn("Error during video processing prevented from causing page refresh")
-        return true // Prevent default error handling
-      }
-      
-      // Call original error handler for other errors
-      if (originalError) {
-        return originalError(message, source, lineno, colno, error)
-      }
-      return false
-    }
-    
-    window.onunhandledrejection = (event) => {
-      console.warn("Unhandled promise rejection caught:", event.reason)
-      
-      // Prevent Next.js manifest promise rejections from causing page refresh
-      if (event.reason && event.reason.message && 
-          event.reason.message.includes('Unexpected end of JSON input')) {
-        console.warn("Next.js manifest promise rejection prevented from causing page refresh")
-        event.preventDefault()
-        return
-      }
-      
-      // Call original handler for other rejections
-      if (originalUnhandledRejection) {
-        originalUnhandledRejection(event)
-      }
-    }
-    
-    return () => {
-      window.onerror = originalError
-      window.onunhandledrejection = originalUnhandledRejection
-    }
-  }, [isVideoProcessing])
+  // COMMENTED OUT: Original useEffect hooks for error handling and localStorage
+  // useEffect(() => {
+  //   // Override the default error handling to prevent page refresh
+  //   const originalError = window.onerror
+  //   const originalUnhandledRejection = window.onunhandledrejection
+  //   
+  //   window.onerror = (message, source, lineno, colno, error) => {
+  //     console.warn("Global error caught:", message, source, lineno, colno, error)
+  //     
+  //     // Prevent Next.js manifest errors from causing page refresh
+  //     if (message && (
+  //       message.toString().includes('Unexpected end of JSON input') ||
+  //       message.toString().includes('loadManifest') ||
+  //       message.toString().includes('getNextFontManifest')
+  //     )) {
+  //       console.warn("Next.js manifest error prevented from causing page refresh")
+  //       return true // Prevent default error handling
+  //     }
+  //     
+  //     // Prevent any errors during video processing from causing page refresh
+  //     if (isVideoProcessing) {
+  //       console.warn("Error during video processing prevented from causing page refresh")
+  //       return true // Prevent default error handling
+  //     }
+  //     
+  //     // Call original error handler for other errors
+  //     if (originalError) {
+  //       return originalError(message, source, lineno, colno, error)
+  //     }
+  //     return false
+  //   }
+  //   
+  //   window.onunhandledrejection = (event) => {
+  //     console.warn("Unhandled promise rejection caught:", event.reason)
+  //     
+  //     // Prevent Next.js manifest promise rejections from causing page refresh
+  //     if (event.reason && event.reason.message && 
+  //         event.reason.message.includes('Unexpected end of JSON input')) {
+  //       console.warn("Next.js manifest promise rejection prevented from causing page refresh")
+  //       event.preventDefault()
+  //       return
+  //     }
+  //     
+  //     // Call original handler for other rejections
+  //     if (originalUnhandledRejection) {
+  //       originalUnhandledRejection(event)
+  //     }
+  //   }
+  //   
+  //   return () => {
+  //     window.onerror = originalError
+  //     window.onunhandledrejection = originalUnhandledRejection
+  //   }
+  // }, [isVideoProcessing])
 
-  // Restore results from localStorage on page load
-  useEffect(() => {
-    try {
-      const savedResults = localStorage.getItem('cnn-processing-results')
-      if (savedResults) {
-        const parsedResults = JSON.parse(savedResults)
-        setResults(parsedResults)
-        console.log("Restored results from localStorage:", parsedResults.length, "results")
-      }
-    } catch (error) {
-      console.warn("Failed to restore results from localStorage:", error)
-    }
-  }, [])
+  // useEffect(() => {
+  //   try {
+  //     const savedResults = localStorage.getItem('cnn-processing-results')
+  //     if (savedResults) {
+  //       const parsedResults = JSON.parse(savedResults)
+  //       setResults(parsedResults)
+  //       console.log("Restored results from localStorage:", parsedResults.length, "results")
+  //     }
+  //   } catch (error) {
+  //     console.warn("Failed to restore results from localStorage:", error)
+  //   }
+  // }, [])
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      setSelectedFile(file)
-    }
-  }
+  // COMMENTED OUT: Original file upload handler
+  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0]
+  //   if (file) {
+  //     setSelectedFile(file)
+  //   }
+  // }
 
-  const processImage = async () => {
-    if (!selectedFile) return
+  // COMMENTED OUT: Original image processing function
+  // const processImage = async () => {
+  //   if (!selectedFile) return
 
-    setIsProcessing(true)
-    setProcessingProgress(0)
+  //   setIsProcessing(true)
+  //   setProcessingProgress(0)
 
-    try {
-      // Create form data
-      const formData = new FormData()
-      formData.append("file", selectedFile)
-      formData.append("type", "image")
+  //   try {
+  //     // Create form data
+  //     const formData = new FormData()
+  //     formData.append("file", selectedFile)
+  //     formData.append("type", "image")
 
-      // Simulate progress updates
-      const progressInterval = setInterval(() => {
-        setProcessingProgress(prev => {
-          if (prev >= 90) return prev
-          return prev + Math.random() * 10
-        })
-      }, 500)
+  //     // Simulate progress updates
+  //     const progressInterval = setInterval(() => {
+  //       setProcessingProgress(prev => {
+  //         if (prev >= 90) return prev
+  //         return prev + Math.random() * 10
+  //       })
+  //     }, 500)
 
-      // Call the dummy API (temporarily using dummy for testing)
-      const response = await fetch("/api/cnn/dummy", {
-        method: "POST",
-        body: formData,
-      })
+  //     // Call the dummy API (temporarily using dummy for testing)
+  //     const response = await fetch("/api/cnn/dummy", {
+  //       method: "POST",
+  //       body: formData,
+  //     })
 
-      clearInterval(progressInterval)
-      setProcessingProgress(100)
+  //     clearInterval(progressInterval)
+  //     setProcessingProgress(100)
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || "Processing failed")
-      }
+  //     if (!response.ok) {
+  //       const errorData = await response.json()
+  //       throw new Error(errorData.error || "Processing failed")
+  //     }
 
-      const result = await response.json()
+  //     const result = await response.json()
 
-      if (result.success) {
-        const processingResult: ProcessingResult = {
-          type: "image",
-          originalImage: URL.createObjectURL(selectedFile),
-          enhancedImage: result.enhancedImage,
-          metrics: result.metrics,
-          processingTime: result.processingTime
-        }
+  //     if (result.success) {
+  //       const processingResult: ProcessingResult = {
+  //         type: "image",
+  //         originalImage: URL.createObjectURL(selectedFile),
+  //         enhancedImage: result.enhancedImage,
+  //         metrics: result.metrics,
+  //         processingTime: result.processingTime
+  //       }
 
-        setResults(prev => [processingResult, ...prev])
-      } else {
-        throw new Error("Processing failed")
-      }
-        } catch (error) {
-          console.error("Processing error:", error)
-          
-          // Show more specific error messages
-          let errorMessage = "Unknown error"
-          if (error instanceof Error) {
-        if (error.message.includes("Could not open input video")) {
-          errorMessage = "Could not open the video file. Please check the file format."
-        } else if (error.message.includes("Could not create output video")) {
-          errorMessage = "Video codec issue. Please try a different video format."
-        } else if (error.message.includes("Failed to load CNN model")) {
-          errorMessage = "CNN model loading failed. Please try again."
-        } else if (error.message.includes("Required file not found")) {
-          errorMessage = "Required files missing. Please contact support."
-        } else if (error.message.includes("encoding issue")) {
-          errorMessage = "Video processing failed due to encoding issue. Please try again."
-        } else if (error.message.includes("codec not supported")) {
-          errorMessage = "Video codec not supported. The system is trying alternative codecs."
-        } else if (error.message.includes("Network error")) {
-          errorMessage = "Network connection issue. Please check your connection."
-        } else if (error.message.includes("timed out")) {
-          errorMessage = "Video processing timed out. Please try with a shorter video."
-        } else {
-          errorMessage = error.message
-        }
-          }
-          
-          alert(`Error: ${errorMessage}`)
-        } finally {
-      setIsProcessing(false)
-      setProcessingProgress(0)
-    }
-  }
-
-
-  const processVideo = async () => {
-    if (!selectedFile) {
-      console.error("No file selected for video processing")
-      alert("Please select a video file first")
-      return
-    }
-
-    console.log("Starting video processing:")
-    console.log("- Selected file:", selectedFile.name)
-    console.log("- File size:", selectedFile.size)
-    console.log("- File type:", selectedFile.type)
-
-    setIsProcessing(true)
-    setIsVideoProcessing(true)
-    setProcessingProgress(0)
-
-    try {
-      // Create form data
-      const formData = new FormData()
-      formData.append("file", selectedFile)
-      formData.append("type", "video")
-      
-      console.log("FormData created with file and type")
-
-      // Simulate progress updates
-      const progressInterval = setInterval(() => {
-        setProcessingProgress(prev => {
-          if (prev >= 90) return prev
-          return prev + Math.random() * 5
-        })
-      }, 1000)
-
-      // Call the dummy API with timeout handling (temporarily using dummy for testing)
-      console.log("Sending request to /api/cnn/dummy")
-      
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 120000) // 2 minute timeout
-      
-      let response
-      try {
-        response = await fetch("/api/cnn/dummy", {
-          method: "POST",
-          body: formData,
-          signal: controller.signal
-        })
-
-        clearTimeout(timeoutId)
-        clearInterval(progressInterval)
-        setProcessingProgress(100)
-
-        console.log("API Response received:")
-        console.log("- Status:", response.status)
-        console.log("- OK:", response.ok)
-        console.log("- Headers:", Object.fromEntries(response.headers.entries()))
-
-        if (!response.ok) {
-          const errorData = await response.json()
-          console.error("API Error:", errorData)
-          throw new Error(errorData.error || "Video processing failed")
-        }
-      } catch (error) {
-        clearTimeout(timeoutId)
-        clearInterval(progressInterval)
-        setProcessingProgress(0)
+  //       setResults(prev => [processingResult, ...prev])
+  //     } else {
+  //       throw new Error("Processing failed")
+  //     }
+  //       } catch (error) {
+  //         console.error("Processing error:", error)
         
-        if (error.name === 'AbortError') {
-          console.error("Request timed out after 2 minutes")
-          throw new Error("Video processing timed out. Please try with a shorter video.")
-        } else {
-          console.error("Network error:", error)
-          throw new Error(`Network error: ${error.message}`)
-        }
-      }
-
-      const result = await response.json()
-      console.log("API Response result:", result)
-      console.log("Result keys:", Object.keys(result))
-      console.log("Result success:", result.success)
-      console.log("Result type:", result.type)
-      console.log("Enhanced video length:", result.enhancedVideo ? result.enhancedVideo.length : "No enhanced video")
-
-      if (result.success) {
-        // Convert base64 download data to blob URL for better playback
-        let enhancedVideoUrl = result.enhancedVideo
-        let originalVideoUrl = result.originalVideo || URL.createObjectURL(selectedFile)
+  //         // Show more specific error messages
+  //         let errorMessage = "Unknown error"
+  //         if (error instanceof Error) {
+  //       if (error.message.includes("Could not open input video")) {
+  //         errorMessage = "Could not open the video file. Please check the file format."
+  //       } else if (error.message.includes("Could not create output video")) {
+  //         errorMessage = "Video codec issue. Please try a different video format."
+  //       } else if (error.message.includes("Failed to load CNN model")) {
+  //         errorMessage = "CNN model loading failed. Please try again."
+  //       } else if (error.message.includes("Required file not found")) {
+  //         errorMessage = "Required files missing. Please contact support."
+  //       } else if (error.message.includes("encoding issue")) {
+  //         errorMessage = "Video processing failed due to encoding issue. Please try again."
+  //       } else if (error.message.includes("codec not supported")) {
+  //         errorMessage = "Video codec not supported. The system is trying alternative codecs."
+  //       } else if (error.message.includes("Network error")) {
+  //         errorMessage = "Network connection issue. Please check your connection."
+  //       } else if (error.message.includes("timed out")) {
+  //         errorMessage = "Video processing timed out. Please try with a shorter video."
+  //       } else {
+  //         errorMessage = error.message
+  //       }
+  //         }
         
-        // Convert enhanced video base64 to blob URL
-        if (result.enhancedVideoDownload && result.enhancedVideoDownload.startsWith('data:')) {
-          try {
-            // Extract base64 data
-            const base64Data = result.enhancedVideoDownload.split(',')[1]
-            const mimeType = result.enhancedVideoDownload.split(':')[1].split(';')[0]
-            
-            // Convert to blob
-            const byteCharacters = atob(base64Data)
-            const byteNumbers = new Array(byteCharacters.length)
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i)
-            }
-            const byteArray = new Uint8Array(byteNumbers)
-            const blob = new Blob([byteArray], { type: mimeType })
-            
-            // Create blob URL
-            enhancedVideoUrl = URL.createObjectURL(blob)
-            console.log("Created blob URL for enhanced video:", enhancedVideoUrl)
-          } catch (error) {
-            console.warn("Failed to create blob URL for enhanced video, using API URL:", error)
-          }
-        }
-        
-        // Convert original video base64 to blob URL
-        if (result.originalVideoDownload && result.originalVideoDownload.startsWith('data:')) {
-          try {
-            // Extract base64 data
-            const base64Data = result.originalVideoDownload.split(',')[1]
-            const mimeType = result.originalVideoDownload.split(':')[1].split(';')[0]
-            
-            // Convert to blob
-            const byteCharacters = atob(base64Data)
-            const byteNumbers = new Array(byteCharacters.length)
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i)
-            }
-            const byteArray = new Uint8Array(byteNumbers)
-            const blob = new Blob([byteArray], { type: mimeType })
-            
-            // Create blob URL
-            originalVideoUrl = URL.createObjectURL(blob)
-            console.log("Created blob URL for original video:", originalVideoUrl)
-          } catch (error) {
-            console.warn("Failed to create blob URL for original video, using fallback:", error)
-          }
-        }
-        
-        const processingResult: ProcessingResult = {
-          type: "video",
-          originalVideo: originalVideoUrl,
-          enhancedVideo: enhancedVideoUrl,
-          enhancedVideoDownload: result.enhancedVideoDownload,
-          metrics: result.metrics,
-          processingTime: result.processingTime,
-          videoInfo: result.videoInfo
-        }
-        
-        console.log("Processing result created:", processingResult)
-        console.log("Enhanced video URL:", processingResult.enhancedVideo)
+  //         alert(`Error: ${errorMessage}`)
+  //       } finally {
+  //     setIsProcessing(false)
+  //     setProcessingProgress(0)
+  //   }
+  // }
 
-        // Use a more stable state update to prevent page refresh
-        setResults(prev => {
-          const newResults = [processingResult, ...prev]
-          // Store in localStorage to survive page refreshes
-          try {
-            localStorage.setItem('cnn-processing-results', JSON.stringify(newResults))
-          } catch (error) {
-            console.warn("Failed to save results to localStorage:", error)
-          }
-          return newResults
-        })
-        
-        // Clear selected file to prevent re-processing
-        setSelectedFile(null)
-      } else {
-        throw new Error("Video processing failed")
-      }
-    } catch (error) {
-      console.error("Video processing error:", error)
-      
-      // Show more specific error messages
-      let errorMessage = "Unknown error"
-      if (error instanceof Error) {
-        if (error.message.includes("Could not open input video")) {
-          errorMessage = "Could not open the video file. Please check the file format."
-        } else if (error.message.includes("Could not create output video")) {
-          errorMessage = "Video codec issue. Please try a different video format."
-        } else if (error.message.includes("Failed to load CNN model")) {
-          errorMessage = "CNN model loading failed. Please try again."
-        } else if (error.message.includes("Required file not found")) {
-          errorMessage = "Required files missing. Please contact support."
-        } else if (error.message.includes("encoding issue")) {
-          errorMessage = "Video processing failed due to encoding issue. Please try again."
-        } else if (error.message.includes("codec not supported")) {
-          errorMessage = "Video codec not supported. The system is trying alternative codecs."
-        } else if (error.message.includes("Network error")) {
-          errorMessage = "Network connection issue. Please check your connection."
-        } else if (error.message.includes("timed out")) {
-          errorMessage = "Video processing timed out. Please try with a shorter video."
-        } else {
-          errorMessage = error.message
-        }
-      }
-      
-      alert(`Error: ${errorMessage}`)
-    } finally {
-      setIsProcessing(false)
-      setIsVideoProcessing(false)
-      setProcessingProgress(0)
-    }
-  }
 
-  const handleDeleteResult = (index: number) => {
-    setResults(prev => {
-      // Revoke blob URLs to free memory
-      const resultToDelete = prev[index]
-      if (resultToDelete?.enhancedVideo?.startsWith('blob:')) {
-        URL.revokeObjectURL(resultToDelete.enhancedVideo)
-      }
-      if (resultToDelete?.originalVideo?.startsWith('blob:')) {
-        URL.revokeObjectURL(resultToDelete.originalVideo)
-      }
-      
-      const newResults = prev.filter((_, i) => i !== index)
-      try {
-        localStorage.setItem('cnn-processing-results', JSON.stringify(newResults))
-      } catch (error) {
-        console.warn("Failed to update localStorage:", error)
-      }
-      return newResults
-    })
-    // Also remove from video errors set
-    setVideoErrors(prev => {
-      const newSet = new Set(prev)
-      newSet.delete(index)
-      return newSet
-    })
-  }
-
-  const handleVideoError = (index: number) => {
-    setVideoErrors(prev => new Set(prev).add(index))
-  }
+  // COMMENTED OUT: Original video processing function and handlers
+  // const processVideo = async () => { ... }
+  // const handleDeleteResult = (index: number) => { ... }
+  // const handleVideoError = (index: number) => { ... }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-cyan-950 relative">
@@ -469,6 +246,30 @@ export default function CNNModelPage() {
               Advanced Convolutional Neural Network for underwater image enhancement and video processing. 
               Transform murky underwater footage into crystal-clear imagery for marine security operations.
             </p>
+          </div>
+
+          {/* Redirect Message */}
+          <div className="text-center mb-12">
+            <div className="bg-slate-900/40 backdrop-blur-md border border-cyan-500/30 rounded-3xl p-8 max-w-2xl mx-auto">
+              <div className="w-16 h-16 bg-gradient-to-br from-emerald-400/30 to-cyan-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Brain className="w-8 h-8 text-emerald-300" />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-4">
+                CNN Processing Moved
+              </h2>
+              <p className="text-cyan-200 mb-6 leading-relaxed">
+                The CNN image and video processing functionality has been moved to our enhanced platform. 
+                Click the button below to access the new processing interface.
+              </p>
+              <a 
+                href="https://enhancement-pipeline.streamlit.app/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/30 hover:scale-105"
+              >
+                Access CNN Processing →
+              </a>
+            </div>
           </div>
 
           {/* Model Stats */}
@@ -503,8 +304,8 @@ export default function CNNModelPage() {
             </Card>
           </div>
 
-          {/* Main Processing Interface */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          {/* COMMENTED OUT: Main Processing Interface - functionality moved to external URL */}
+          {/* <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-slate-900/40 backdrop-blur-md border border-cyan-500/30">
               <TabsTrigger value="image" className="flex items-center space-x-2">
                 <ImageIcon className="w-4 h-4" />
@@ -889,6 +690,8 @@ export default function CNNModelPage() {
               </div>
             </div>
           )}
+
+          */}
 
           {/* Model Information */}
           <div className="mt-12">

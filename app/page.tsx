@@ -74,11 +74,11 @@ export default function HomePage() {
                     </div>
                   </div>
                   
-                  <Link href="/cnn-model">
+                  <a href="https://enhancement-pipeline.streamlit.app/" target="_blank" rel="noopener noreferrer">
                     <button className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/30 hover:scale-105 text-sm">
                       Explore Solution →
                     </button>
-                  </Link>
+                  </a>
                 </div>
               </div>
 

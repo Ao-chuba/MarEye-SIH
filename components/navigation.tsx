@@ -17,8 +17,8 @@ export function Navigation() {
 
   const navItems = [
     { href: "/", label: "Home", icon: "🏠" },
-    { href: "/cnn-model", label: "CNN", icon: "🧠" },
-    { href: "/jetson", label: "Jetson", icon: "🚀" },
+    { href: "https://enhancement-pipeline.streamlit.app/", label: "CNN", icon: "🧠", external: true },
+    { href: "https://enhancement-pipeline.streamlit.app/", label: "Jetson", icon: "🚀", external: true },
     { href: "/detection", label: "Detection", icon: "🎯" },
     { href: "/analytics", label: "Analytics", icon: "📊" }
   ]
@@ -69,6 +69,20 @@ export function Navigation() {
                 <div className="flex items-center bg-white/10 rounded-lg p-1 border border-white/10">
                   {navItems.map((item) => {
                     const isActive = pathname === item.href
+                    if (item.external) {
+                      return (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="relative flex items-center space-x-1 px-2 py-1.5 text-xs font-medium rounded-md transition-all duration-300 group text-cyan-100 hover:text-white hover:bg-white/10"
+                        >
+                          <span className="text-sm">{item.icon}</span>
+                          <span className="whitespace-nowrap">{item.label}</span>
+                        </a>
+                      )
+                    }
                     return (
                       <Link
                         key={item.href}
@@ -171,12 +185,25 @@ export function Navigation() {
             <div className="lg:hidden">
               <div className="px-4 pt-4 pb-6 space-y-2 bg-slate-900/95 backdrop-blur-2xl border-t border-cyan-400/20 rounded-b-3xl shadow-2xl">
                 {navItems.map((item) => {
-
                   const isActive = pathname === item.href
+                  if (item.external) {
+                    return (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-3 px-4 py-3 text-base font-medium rounded-xl transition-all duration-300 text-cyan-100 hover:text-white hover:bg-white/10"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <span className="text-xl">{item.icon}</span>
+                        <span>{item.label}</span>
+                      </a>
+                    )
+                  }
                   return (
                     <Link
                       key={item.href}
-
                       href={item.href}
                       className={`flex items-center space-x-3 px-4 py-3 text-base font-medium rounded-xl transition-all duration-300 ${
                         isActive
