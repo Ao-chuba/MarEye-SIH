@@ -23,24 +23,16 @@ if (!EMAIL_DISABLED) {
   });
 }
 */
-// Use explicit SMTP if provided; otherwise fallback to simple Gmail service
-const transporter = process.env.SMTP_HOST
-  ? nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: String(process.env.SMTP_SECURE || 'false') === 'true',
-      auth: {
-        user: process.env.HOST_EMAIL,
-        pass: process.env.HOST_EMAIL_PASSWORD,
-      },
-    })
-  : nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.HOST_EMAIL,
-        pass: process.env.HOST_EMAIL_PASSWORD,
-      },
-    });
+// Use explicit SMTP settings for Gmail to improve compatibility with hosting providers
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // Use 'true' for port 465, 'false' for all other ports
+  auth: {
+    user: process.env.HOST_EMAIL,
+    pass: process.env.HOST_EMAIL_PASSWORD,
+  },
+});
 
 // Test the transporter configuration
 if (!EMAIL_DISABLED && transporter) {
