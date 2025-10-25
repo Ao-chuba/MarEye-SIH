@@ -19,7 +19,7 @@ export function Navigation() {
     { href: "/", label: "Home", icon: "🏠" },
     { href: "https://enhancement-pipeline.streamlit.app/", label: "CNN", icon: "🧠", external: true },
     { href: "https://enhancement-pipeline.streamlit.app/", label: "Jetson", icon: "🚀", external: true },
-    { href: "/detection", label: "Detection", icon: "🎯" },
+    { href: "https://detection-0vk5.onrender.com/", label: "Detection", icon: "🎯",external: true},
     { href: "/analytics", label: "Analytics", icon: "📊" }
   ]
 
