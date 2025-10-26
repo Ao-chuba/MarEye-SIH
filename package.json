@@ -88,6 +88,7 @@
     "react-leaflet": "^4.2.1",
     "react-resizable-panels": "latest",
     "recharts": "latest",
+    "resend": "^6.2.2",
     "sharp": "^0.34.4",
     "snappy": "latest",
     "socks": "latest",
