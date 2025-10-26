@@ -6,27 +6,15 @@ import { useAuth } from "@/hooks/use-auth"
 
 export function ConditionalNavigation() {
   const pathname = usePathname()
-  const { isAuthenticated, loading } = useAuth()
-  
-  // Don't show navigation on auth pages
-  if (pathname.startsWith("/auth/")) {
-    return null
+  // Paths where the navigation should be hidden
+  const hiddenPaths = ["/try", "/auth"];
+
+  // Check if the current path starts with any of the hidden paths
+  const shouldHideNav = hiddenPaths.some(path => pathname.startsWith(path));
+
+  if (shouldHideNav) {
+    return null;
   }
-  
-  // Don't show navigation on try page
-  if (pathname === "/try") {
-    return null
-  }
-  
-  // Don't show navigation if user is not authenticated
-  if (!isAuthenticated) {
-    return null
-  }
-  
-  // Show loading state while checking authentication
-  if (loading) {
-    return null
-  }
-  
-  return <Navigation />
+
+  return <Navigation />;
 }

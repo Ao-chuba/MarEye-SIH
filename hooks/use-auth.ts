@@ -91,7 +91,7 @@ export function useAuth() {
       localStorage.removeItem("profile")
       localStorage.removeItem("user")
       setUser(null)
-      window.location.href = "/auth/login"
+      window.location.href = "/try"
     } catch (error) {
       console.error("Logout error:", error)
     }

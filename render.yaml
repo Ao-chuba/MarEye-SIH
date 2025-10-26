@@ -14,7 +14,7 @@ services:
         value: "https://your-render-app-url.onrender.com" # Replace with your actual Render URL
     healthCheckPath: /api/health
     autoDeploy: true
-    branch: main
+    branch: enchance
     # Additional configuration for better deployment
     dockerfilePath: ./Dockerfile
     # Render will automatically set PORT environment variable

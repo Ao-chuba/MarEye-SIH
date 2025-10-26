@@ -6,12 +6,12 @@ export function middleware(request: NextRequest) {
 	const pathname = request.nextUrl.pathname;
 	
 	// Only protect the root path - avoid complex operations
-	if (pathname === "/") {
-		const authToken = request.cookies.get("auth_token");
-		if (!authToken || !authToken.value) {
-			return NextResponse.redirect(new URL("/try", request.url));
-		}
-	}
+	// if (pathname === "/") {
+	// 	const authToken = request.cookies.get("auth_token");
+	// 	if (!authToken || !authToken.value) {
+	// 		return NextResponse.redirect(new URL("/try", request.url));
+	// 	}
+	// }
 
 	return NextResponse.next();
 }

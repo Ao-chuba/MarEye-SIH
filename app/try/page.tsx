@@ -398,7 +398,7 @@ export default function TryPage() {
 
 						{/* Button - keeping your original link */}
 						<Link
-							href="/auth/login"
+							href="/"
 							className="relative inline-flex items-center px-16 py-6 text-xl font-bold text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-teal-500 rounded-full shadow-2xl hover:from-cyan-400 hover:via-blue-500 hover:to-teal-400 transition-all duration-500 transform hover:scale-110 hover:shadow-cyan-500/30 focus:outline-none focus:ring-4 focus:ring-cyan-500/50 group overflow-hidden"
 
 						>

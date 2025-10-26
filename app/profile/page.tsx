@@ -44,13 +44,6 @@ export default function ProfilePage() {
         if (!res.ok) {
           const errorMessage = data?.error ?? data?.message ?? `Request failed (${res.status})`;
           setError(errorMessage);
-          
-          // If unauthorized, redirect to login after a delay
-          if (res.status === 401) {
-            setTimeout(() => {
-              router.push("/auth/login");
-            }, 3000);
-          }
           return;
         }
 
@@ -83,8 +76,8 @@ export default function ProfilePage() {
           console.warn("Could not clear localStorage:", e);
         }
         
-        // Redirect to login
-        router.push("/auth/login");
+        // Redirect to try page
+        router.push("/try");
       });
   }
 
@@ -109,7 +102,7 @@ export default function ProfilePage() {
           {error?.includes("Invalid or expired token") || error?.includes("Authentication") ? (
             <div className="mb-4 p-3 bg-yellow-600/20 border border-yellow-600/30 rounded">
               <p className="text-sm text-yellow-200">
-                Your session has expired. You will be redirected to login in a few seconds...
+                Your session has expired.
               </p>
             </div>
           ) : null}

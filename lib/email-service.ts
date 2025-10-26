@@ -1,33 +1,50 @@
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from 'nodemailer';
 
 // Debug environment variables
 const EMAIL_DISABLED = process.env.EMAIL_DISABLE === 'true';
 
 console.log('Email config check:', {
-  RESEND_API_KEY: process.env.RESEND_API_KEY ? 'Set' : 'Not set',
+  HOST_EMAIL: process.env.HOST_EMAIL ? 'Set' : 'Not set',
+  HOST_EMAIL_PASSWORD: process.env.HOST_EMAIL_PASSWORD ? 'Set' : 'Not set',
   NODE_ENV: process.env.NODE_ENV,
   EMAIL_DISABLED,
 });
+
+// Use explicit SMTP settings for Gmail to improve compatibility with hosting providers
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // Use 'true' for port 465, 'false' for all other ports
+  auth: {
+    user: process.env.HOST_EMAIL,
+    pass: process.env.HOST_EMAIL_PASSWORD,
+  },
+});
+
+// Test the transporter configuration
+if (!EMAIL_DISABLED && transporter) {
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error('❌ SMTP configuration error:', error);
+    } else {
+      console.log('✅ SMTP server is ready to send emails');
+    }
+  });
+} else if (EMAIL_DISABLED) {
+  console.log('✉️  Email sending disabled (EMAIL_DISABLE=true). Skipping SMTP setup.');
+}
 
 export async function sendOTPEmail(email: string, otp: string, name?: string) {
   if (EMAIL_DISABLED) {
     console.log(`✉️ [DEV] EMAIL_DISABLE=true. Pretending to send OTP to ${email}: ${otp}`);
     return { success: true };
   }
-
-  if (!process.env.RESEND_API_KEY) {
-    console.error('❌ RESEND_API_KEY is not set. Cannot send email.');
-    return { success: false, error: 'Server configuration error.' };
-  }
-
-  try {
-    await resend.emails.send({
-      from: 'onboarding@resend.dev', // This is required by Resend for the free plan
-      to: email,
-      subject: 'OTP Verification - MarEye Security Platform',
-      html: `
+  const mailOptions = {
+    from: process.env.HOST_EMAIL,
+    to: email,
+    subject: 'OTP Verification - MarEye Security Platform',
+    text: `Your verification code is: ${otp}\n\nThis code expires in 10 minutes. If you did not request this, you can ignore this email.`,
+    html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0891b2 100%); padding: 40px; border-radius: 20px; color: white;">
         <div style="text-align: center; margin-bottom: 30px;">
           <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #06b6d4, #3b82f6); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 32px;">
@@ -62,11 +79,15 @@ export async function sendOTPEmail(email: string, otp: string, name?: string) {
         </div>
       </div>
     `,
-    });
-    console.log(`✅ OTP email sent successfully to ${email} via Resend`);
+  };
+
+  try {
+    if (!transporter) throw new Error('SMTP transporter not configured');
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ OTP email sent successfully to ${email}`);
     return { success: true };
   } catch (error) {
-    console.error('❌ Error sending OTP email via Resend:', error);
+    console.error('❌ Error sending OTP email:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 }
@@ -76,18 +97,11 @@ export async function sendWelcomeEmail(email: string, name: string) {
     console.log(`✉️ [DEV] EMAIL_DISABLE=true. Pretending to send Welcome email to ${email}`);
     return { success: true };
   }
-
-  if (!process.env.RESEND_API_KEY) {
-    console.error('❌ RESEND_API_KEY is not set. Cannot send email.');
-    return { success: false, error: 'Server configuration error.' };
-  }
-
-  try {
-    await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: email,
-      subject: '🎉 Welcome to MarEye Security!',
-      html: `
+  const mailOptions = {
+    from: process.env.HOST_EMAIL,
+    to: email,
+    subject: '🎉 Welcome to MarEye Security!',
+    html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0891b2 100%); padding: 40px; border-radius: 20px; color: white;">
         <div style="text-align: center; margin-bottom: 30px;">
           <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #06b6d4, #3b82f6); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 32px;">
@@ -129,11 +143,15 @@ export async function sendWelcomeEmail(email: string, name: string) {
         </div>
       </div>
     `,
-    });
-    console.log(`✅ Welcome email sent successfully to ${email} via Resend`);
+  };
+
+  try {
+    if (!transporter) throw new Error('SMTP transporter not configured');
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Welcome email sent successfully to ${email}`);
     return { success: true };
   } catch (error) {
-    console.error('❌ Error sending welcome email via Resend:', error);
+    console.error('❌ Error sending welcome email:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 }
