@@ -221,7 +221,7 @@ export function ContactSection() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <Button variant="outline" className="w-full justify-start bg-transparent" asChild>
-                  <a href="https://github.com/AdityaShome/Oceanova" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                  <a href="https://github.com/Ao-chuba/MarEye-SIH/tree/enchance" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                     <Github className="h-4 w-4" />
                     Open Source Code Repository
                     <ExternalLink className="h-4 w-4 ml-auto" />
